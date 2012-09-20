@@ -1,4 +1,4 @@
-package de.jutzig.maven.eclipse.jnlp.plugin;
+package de.jutzig.maven.feature.jnlp.plugin;
 
 
 import java.io.File;

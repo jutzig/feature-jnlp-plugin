@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.jutzig.maven</groupId>
-	<artifactId>eclipse-jnlp-plugin</artifactId>
+	<artifactId>feature-jnlp-plugin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>eclipse-jnlp-plugin Maven Plugin</name>
+	<name>feature-jnlp-plugin Maven Plugin</name>
 	<description>Create a wrapper jnlp file for an eclipse feature</description>
 
 	<properties>
