@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -40,10 +41,15 @@ import org.xml.sax.SAXException;
 public class GenerateJNLPMojo
     extends AbstractMojo
 {
-    /**
+	/**
+	 * Supported packaging.
+	 */
+    private static final String ECLIPSE_FEATURE = "eclipse-feature";
+
+	/**
      * Location of the file.
      *
-     * @parameter expression= "target/site/features/${project.artifactId}_${project.version}.jar"
+     * @parameter expression= "${genjnlp.featurejar}" default-value= "target/site/features/${project.artifactId}_${project.version}.jar"
      * @required
      */
     private File featureJar;
@@ -67,15 +73,25 @@ public class GenerateJNLPMojo
     /**
      * the vendor as it appear in the JNLP
      *
-     * @parameter expression= "${project.url}"
+     * @parameter expression= "${genjnlp.codebase}" default-value= "${project.url}"
      * @required
      */
-    private String url;
+    private String codebase;
 
+    /**
+     * @parameter default-value="${project.packaging}"
+     * @parameter required
+     * @readonly
+     */
+    private String packaging;
 
     public void execute()
         throws MojoExecutionException
     {
+    	if(!ECLIPSE_FEATURE.equalsIgnoreCase(packaging)) {
+    		getLog().debug(MessageFormat.format("The packaging of current project is not {0} but {1}", ECLIPSE_FEATURE, packaging));
+    		return;
+    	}
 
         File jnlp = new File(featureJar.getParentFile(),
                              featureJar.getName().substring(0, featureJar.getName().length() - 3) + "jnlp");
@@ -135,7 +151,7 @@ public class GenerateJNLPMojo
             Element jnlpElement = jnlp.createElement("jnlp");
             jnlp.appendChild(jnlpElement);
             jnlpElement.setAttribute("spec", "1.0+");
-            jnlpElement.setAttribute("codebase", url);
+            jnlpElement.setAttribute("codebase", codebase);
 
             Element information = jnlp.createElement("information");
             jnlpElement.appendChild(information);
